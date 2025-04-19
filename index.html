@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandu Salon | Premium Beauty Experience</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+        }
+        .hero-animate {
+            animation: fadeInUp 1s ease-out;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+        .canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.8;
+        }
+        .testimonial-slider {
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+        .testimonial-slide {
+            scroll-snap-align: center;
+        }
+        .bg-gradient-modern {
+            background: linear-gradient(135deg, rgba(255,223,235,0.8) 0%, rgba(209,232,255,0.8) 100%);
+        }
+        .navbar-glass {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .svg-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <!-- P5.js Background Particle Effect Canvas -->
+    <div id="p5-container" class="fixed top-0 left-0 w-full h-full -z-10"></div>
+
+    <!-- NavBar with Glass Effect -->
+    <nav id="navbar" class="fixed w-full transition-all duration-500 z-50 bg-white bg-opacity-80 navbar-glass">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <a href="#" class="flex items-center space-x-2">
+                    <span class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600">Sandu Salon</span>
+                </a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-700 hover:text-purple-600 font-medium transition-colors">Home</a>
+                    <a href="#services" class="text-gray-700 hover:text-purple-600 font-medium transition-colors">Services</a>
+                    <a href="#experts" class="text-gray-700 hover:text-purple-600 font-medium transition-colors">Our Experts</a>
+                    <a href="#gallery" class="text-gray-700 hover:text-purple-600 font-medium transition-colors">Gallery</a>
+                    <a href="#testimonials" class="text-gray-700 hover:text-purple-600 font-medium transition-colors">Testimonials</a>
+                    <a href="#contact" class="text-gray-700 hover:text-purple-600 font-medium transition-colors">Contact</a>
+                    <a href="#booking" class="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-6 py-2 rounded-full hover:shadow-lg transition duration-300 transform hover:-translate-y-1">Book Now</a>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-purple-600 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="md:hidden hidden bg-white rounded-lg mt-2 py-2 shadow-lg">
+                <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600">Home</a>
+                <a href="#services" class="block px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600">Services</a>
+                <a href="#experts" class="block px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600">Our Experts</a>
+                <a href="#gallery" class="block px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600">Gallery</a>
+                <a href="#testimonials" class="block px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600">Testimonials</a>
+                <a href="#contact" class="block px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600">Contact</a>
+                <a href="#booking" class="block mx-4 mt-2 text-center bg-gradient-to-r from-purple-600 to-pink-500 text-white px-4 py-2 rounded-full">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Three.js -->
+    <header class="relative min-h-screen flex items-center pt-16 overflow-hidden bg-gradient-modern">
+        <div id="three-container" class="absolute top-0 left-0 w-full h-full -z-10"></div>
+        <div class="container mx-auto px-4 z-10">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 space-y-6 hero-animate">
+                    <h1 class="text-5xl md:text-6xl font-bold leading-tight text-gray-800">Transform Your <span class="bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-500">Beauty</span> with Us</h1>
+                    <p class="text-xl text-gray-600 max-w-lg">Experience premium beauty services tailored to enhance your natural beauty. Award-winning stylists and cutting-edge techniques.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#services" class="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-8 py-3 rounded-full font-medium text-lg hover:shadow-lg transition duration-300 text-center transform hover:-translate-y-1">Explore Services</a>
+                        <a href="#booking" class="border-2 border-purple-600 text-purple-600 px-8 py-3 rounded-full font-medium text-lg hover:bg-purple-600 hover:text-white transition duration-300 text-center transform hover:-translate-y-1">Book Appointment</a>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 mt-10 lg:mt-0 flex justify-center">
+                    <div class="relative w-80 h-80 rounded-full bg-gradient-to-r from-pink-300 to-purple-300 flex items-center justify-center">
+                        <div class="absolute w-full h-full animate-spin-slow opacity-30">
+                            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="#FF0066" d="M41.2,-68.3C54.9,-61.2,68.4,-52.7,76.8,-40.2C85.2,-27.7,88.4,-11.1,87.3,5.3C86.2,21.7,80.8,37.9,70.5,49.9C60.2,62,45,69.8,29.7,74.8C14.4,79.8,-1,82,-16.5,80C-32,78,-47.7,71.7,-59.8,60.9C-72,50.1,-80.7,34.6,-85.6,17.7C-90.5,0.7,-91.5,-17.9,-84.6,-32.6C-77.6,-47.3,-62.7,-58.3,-47.1,-65.4C-31.5,-72.5,-15.7,-75.7,-0.3,-75.2C15.1,-74.7,30.2,-70.5,41.2,-59.3Z" transform="translate(100 100)" />
+                            </svg>
+                        </div>
+                        <div class="w-72 h-72 rounded-full bg-white flex items-center justify-center text-center text-2xl font-bold text-purple-600">
+                            Sandu Salon Premium Experience
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <svg class="svg-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#ffffff" fill-opacity="1" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,213.3C672,224,768,224,864,208C960,192,1056,160,1152,154.7C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </header>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Why Choose Sandu Salon?</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">Experience our premium services with state-of-the-art facilities and expert stylists who are committed to making you look your best.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="p-6 text-center hover:shadow-xl rounded-xl transition duration-300 transform hover:-translate-y-2 bg-gray-50">
+                    <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-award text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Award Winning</h3>
+                    <p class="text-gray-600">Our salon has won multiple awards for excellence in beauty services</p>
+                </div>
+                
+                <div class="p-6 text-center hover:shadow-xl rounded-xl transition duration-300 transform hover:-translate-y-2 bg-gray-50">
+                    <div class="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-md text-2xl text-pink-500"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Expert Stylists</h3>
+                    <p class="text-gray-600">Our team consists of certified professionals with years of experience</p>
+                </div>
+                
+                <div class="p-6 text-center hover:shadow-xl rounded-xl transition duration-300 transform hover:-translate-y-2 bg-gray-50">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-gem text-2xl text-blue-500"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Premium Products</h3>
+                    <p class="text-gray-600">We use only high-quality beauty products for the best results</p>
+                </div>
+                
+                <div class="p-6 text-center hover:shadow-xl rounded-xl transition duration-300 transform hover:-translate-y-2 bg-gray-50">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-leaf text-2xl text-green-500"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Eco-Friendly</h3>
+                    <p class="text-gray-600">Committed to sustainable practices and eco-friendly products</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section with Animated Cards -->
+    <section id="services" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Our Premium Services</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">Discover our comprehensive range of beauty and wellness services designed to enhance your natural beauty</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-md hover:shadow-xl p-6 service-card transition duration-300">
+                    <div class="bg-gradient-to-r from-purple-400 to-blue-500 text-white w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-cut text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Premium Haircuts</h3>
+                    <p class="text-gray-600 mb-4">Expert styling tailored to enhance your facial features with the latest trends or timeless classics.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Women's Haircuts</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Men's Grooming</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Children's Haircuts</li>
+                    </ul>
+                    <a href="#booking" class="text-purple-600 font-medium hover:text-purple-800 flex items-center">
+                        Book Service <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md hover:shadow-xl p-6 service-card transition duration-300">
+                    <div class="bg-gradient-to-r from-pink-400 to-red-500 text-white w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-paint-brush text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Hair Coloring</h3>
+                    <p class="text-gray-600 mb-4">Express yourself with vibrant colors or subtle highlights using premium coloring products.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Full Color Treatments</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Highlights & Lowlights</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Balayage & Ombre</li>
+                    </ul>
+                    <a href="#booking" class="text-purple-600 font-medium hover:text-purple-800 flex items-center">
+                        Book Service <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md hover:shadow-xl p-6 service-card transition duration-300">
+                    <div class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-spa text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Luxury Facials</h3>
+                    <p class="text-gray-600 mb-4">Rejuvenate your skin with our customized facial treatments for all skin types.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Deep Cleansing Facials</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Anti-Aging Treatments</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Hydrating Facials</li>
+                    </ul>
+                    <a href="#booking" class="text-purple-600 font-medium hover:text-purple-800 flex items-center">
+                        Book Service <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md hover:shadow-xl p-6 service-card transition duration-300">
+                    <div class="bg-gradient-to-r from-green-400 to-teal-500 text-white w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-hand-sparkles text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Nail Artistry</h3>
+                    <p class="text-gray-600 mb-4">Complete your look with our professional nail care and artistic designs.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Manicure & Pedicure</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Gel & Acrylic Nails</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Nail Art & Design</li>
+                    </ul>
+                    <a href="#booking" class="text-purple-600 font-medium hover:text-purple-800 flex items-center">
+                        Book Service <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md hover:shadow-xl p-6 service-card transition duration-300">
+                    <div class="bg-gradient-to-r from-red-400 to-pink-500 text-white w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-heart text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Bridal Packages</h3>
+                    <p class="text-gray-600 mb-4">Comprehensive beauty services to make you shine on your special day.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Bridal Hair & Makeup</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Bridal Party Services</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Pre-Wedding Treatments</li>
+                    </ul>
+                    <a href="#booking" class="text-purple-600 font-medium hover:text-purple-800 flex items-center">
+                        Book Service <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md hover:shadow-xl p-6 service-card transition duration-300">
+                    <div class="bg-gradient-to-r from-blue-400 to-indigo-500 text-white w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-hands text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Relaxation Massages</h3>
+                    <p class="text-gray-600 mb-4">Rejuvenate your body and mind with our therapeutic massage treatments.</p>
+                    <ul class="space-y-2 mb-6">
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Head & Scalp Massage</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Aromatherapy Massage</li>
+                        <li class="flex items-center text-gray-600"><i class="fas fa-check text-green-500 mr-2"></i> Hot Stone Therapy</li>
+                    </ul>
+                    <a href="#booking" class="text-purple-600 font-medium hover:text-purple-800 flex items-center">
+                        Book Service <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#pricing" class="inline-flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-500 text-white px-8 py-3 rounded-full font-medium text-lg hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+                    View Full Price List <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Experts Section -->
+    <section id="experts" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Meet Our Expert Stylists</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">Our team of highly trained professionals are passionate about beauty and dedicated to providing exceptional service</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="bg-gradient-to-b from-purple-300 to-pink-300 rounded-full w-48 h-48 mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-white text-2xl font-bold">SA</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800">Sarah Anderson</h3>
+                    <p class="text-purple-600 mb-2">Head Stylist</p>
+                    <p class="text-gray-600 mb-4">Specialized in creative color techniques and precision cuts</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-blue-400 hover:text-blue-600"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-pink-400 hover:text-pink-600"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-blue-500 hover:text-blue-700"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-gradient-to-b from-blue-300 to-teal-300 rounded-full w-48 h-48 mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-white text-2xl font-bold">JL</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800">James Lee</h3>
+                    <p class="text-purple-600 mb-2">Color Specialist</p>
+                    <p class="text-gray-600 mb-4">Expert in balayage, highlights, and modern coloring techniques</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-blue-400 hover:text-blue-600"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-pink-400 hover:text-pink-600"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-blue-500 hover:text-blue-700"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-gradient-to-b from-pink-300 to-red-300 rounded-full w-48 h-48 mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-white text-2xl font-bold">MP</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800">Maria Perez</h3>
+                    <p class="text-purple-600 mb-2">Makeup Artist</p>
+                    <p class="text-gray-600 mb-4">Specialized in bridal and event makeup with a creative touch</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-blue-400 hover:text-blue-600"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-pink-400 hover:text-pink-600"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-blue-500 hover:text-blue-700"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-gradient-to-b from-yellow-300 to-orange-300 rounded-full w-48 h-48 mx-auto mb-4 flex items-center justify-center">
+                        <span class="text-white text-2xl font-bold">RJ</span>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800">Ryan Johnson</h3>
+                    <p class="text-purple-600 mb-2">Nail Technician</p>
+                    <p class="text-gray-600 mb-4">Expert in nail art, gel extensions, and hand/foot treatments</p>
+                    <div class="flex justify-center space-x-3">
+                        <a href="#" class="text-blue-400 hover:text-blue-600"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-pink-400 hover:text-pink-600"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-blue-500 hover:text-blue-700"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#team" class="inline-flex items-center
